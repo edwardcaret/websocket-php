@@ -27,7 +27,7 @@ class Base {
   }
 
   public function send($payload, $opcode = 'text', $masked = true) {
-    if (!$this->is_connected) $this->connect(); /// @todo This is a client function, fixme!
+    if (!$this->is_connected) $this->reconnect(); /// @todo This is a client function, fixme!
 
     if (!in_array($opcode, array_keys(self::$opcodes))) {
       throw new BadOpcodeException("Bad opcode '$opcode'.  Try 'text' or 'binary'.");
@@ -86,7 +86,7 @@ class Base {
   }
 
   public function receive() {
-    if (!$this->is_connected) $this->connect(); /// @todo This is a client function, fixme!
+    if (!$this->is_connected) $this->reconnect(); /// @todo This is a client function, fixme!
 
     // Just read the main fragment information first.
     $data = $this->read(2);
@@ -176,12 +176,19 @@ class Base {
   }
 
   protected function write($data) {
-    $written = fwrite($this->socket, $data);
-
-    if ($written < strlen($data)) {
-      throw new ConnectionException(
-        "Could only write $written out of " . strlen($data) . " bytes."
-      );
+    if ($this->socket) {
+      $written = fwrite($this->socket, $data);
+  
+      if ($written < strlen($data)) {
+        throw new ConnectionException(
+          "Could only write $written out of " . strlen($data) . " bytes."
+        );
+        return;
+      } else {
+        throw new ConnectionException(
+          "SOcket was diusconnected while trying to write ". strlen($data) . " bytes."
+        );
+      }
     }
   }
 

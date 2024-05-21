@@ -11,6 +11,7 @@ class Client extends Base {
    *   Associative array containing:
    *   - timeout:      Set the socket timeout in seconds.  Default: 5
    *   - headers:      Associative array of headers to set/override.
+   *   - autoreconnect: Boolean indicating whether a reconnect may be done after unexpected disconnect
    */
   public function __construct($uri, $options = array()) {
     $this->options = $options;
@@ -25,6 +26,18 @@ class Client extends Base {
       if (get_resource_type($this->socket) === 'stream') fclose($this->socket);
       $this->socket = null;
     }
+  }
+
+  protected function reconnect() {
+    if ($this->options['autoreconnect'] == true) {
+      return $this->connect();
+    } else {
+      $this->is_connected = false;
+    }
+  }
+
+  public function startconnection() {
+    $this->connect();
   }
 
   /**

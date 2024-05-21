@@ -4,6 +4,9 @@ Websocket Client for PHP
 [![Build Status](https://travis-ci.org/Textalk/websocket-php.png)](https://travis-ci.org/Textalk/websocket-php)
 [![Coverage Status](https://coveralls.io/repos/Textalk/websocket-php/badge.png)](https://coveralls.io/r/Textalk/websocket-php)
 
+This is a private fork of the original repository. Main change is adding of a autoreconnect option
+to solve some connection issues. This is done as a change to the original 1.0.3 tag.
+
 This package mainly contains a WebSocket client for PHP.
 
 I made it because the state of other WebSocket clients I could found was either very poor
@@ -26,7 +29,7 @@ Preferred way to install is with [Composer](https://getcomposer.org/).
 Just add
 
     "require": {
-      "textalk/websocket": "1.0.*"
+      "edwardcaret/websocket-php": "1.0.4"
     }
 
 in your projects composer.json.
