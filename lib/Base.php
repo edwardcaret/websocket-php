@@ -184,10 +184,6 @@ class Base {
           "Could only write $written out of " . strlen($data) . " bytes."
         );
         return;
-      } else {
-        throw new ConnectionException(
-          "SOcket was diusconnected while trying to write ". strlen($data) . " bytes."
-        );
       }
     }
   }
